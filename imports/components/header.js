@@ -21,7 +21,7 @@ function HeaderX(props){
                 <Row justify='center' align="top">
                     <Col flex='300'>
                         <div className="layout-logo">
-                            <NavLink exact to="/"><h1> <img style={{ height: '30px', width: '30px'}} alt='Hack(EduTech); Logo' src={window.location.origin + '/hacker64.png' }/><span style={{ fontSize:'0.8em', fontFamily:'Quicksand' }}> Hack(EduTech);</span> <sub><span style={{ fontSize: '0.6em', color: 'grey'}}>{'v' + pkg.version}</span></sub></h1></NavLink>
+                            <NavLink exact to="/"><h1> <img style={{ height: '30px', width: '30px'}} alt='Hack(EduTech); Logo' src={window.location.origin + '/hacker64.png' }/><span style={{ fontSize:'0.8em', fontFamily:'Quicksand' }}> Hack(<span style={{ color:'#ff4d4f'}}>Edu</span><span style={{ color:'#007bff'}}>Tech</span>);</span> <sub><span style={{ fontSize: '0.6em', color: 'grey'}}>{'v' + pkg.version}</span></sub></h1></NavLink>
                         </div>
                     </Col>
                 </Row>
