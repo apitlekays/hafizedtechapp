@@ -13,3 +13,7 @@ p {
   font-family: "Raleway", sans-serif !important;
   font-size: 1.2em;
 }
+
+.layout-logo {
+  text-align: center;
+}
