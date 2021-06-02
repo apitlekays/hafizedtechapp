@@ -16,6 +16,8 @@ import HeaderX from '../imports/components/header';
 import FooterX from '../imports/components/footer';
 
 const Home = React.lazy(() => import('../imports/ui/pages/home'));
+const DetailedView = React.lazy(() => import('../imports/ui/pages/detailedview'));
+const Missing = React.lazy(() => import('../imports/ui/pages/missing'));
 
 Meteor.startup(() => {
 
@@ -48,8 +50,17 @@ Meteor.startup(() => {
           <Suspense fallback={<Loading />}>
             <Switch>
               <Route exact path='/' render={() => {
-                return Meteor.userId() ? <Redirect to='/dashboard'/> : <Home/>
+                return <Home/>
               }}/>
+              <Route exact path='/pedagogi/:_id' render={( {match} ) => {
+                return <DetailedView match={match} />
+              }}/>
+              <Route exact path='/teknologi/:_id' render={( {match} ) => {
+                return <DetailedView match={match} />
+              }}/>
+              <Route path='*'>
+                <Missing/>
+              </Route>
             </Switch>
           </Suspense>
           <FooterX/>
