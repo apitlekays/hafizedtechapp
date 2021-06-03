@@ -1,0 +1,37 @@
+.hero-detailed {
+    background-color: #b83f3f;
+    height: 350px;
+    background-position: center;
+}
+
+.hero-detailed::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 64px;
+    width: 100%;
+    height: 350px;
+    opacity: 0.8;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background: #C33764;  /* fallback colour. Make sure this is just one solid colour. */
+    background: -webkit-linear-gradient(rgba(14, 21, 88, 0.8), rgba(139, 5, 48, 0.8));
+    background: linear-gradient(rgba(14, 21, 88, 0.8), rgba(139, 5, 48, 0.8)); /* The least supported option. */
+}
+
+.article-main{
+    position: relative;
+    top: -60px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px darkgrey;
+    padding: 40px;
+}
+
+.hero-detailed-contents{
+    z-index: 1;
+    text-align: center;
+    margin-top: 100px;
+}

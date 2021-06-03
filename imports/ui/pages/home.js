@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import Row from 'antd/es/row';
 import Col from 'antd/es/col';
@@ -144,11 +144,6 @@ const data = [
     }
 ]
 
-const addMeterTular = (id) => {
-    // TODO add Meteor method to call document and add to views
-    console.log('bump up views for document with _id: ', id);
-}
-
 const Home = () => {
 
     const [dataClick, setDataClick] = useState({
@@ -177,39 +172,43 @@ const Home = () => {
         setAffixed(!affixed)
     }
 
+    const addMeterTular = (id) => {
+        // TODO add Meteor method to call document and add to views
+        console.log('bump up views for document with _id: ', id);
+    }
+
     return (
         <>
         <Affix onChange={toggleAffix}>
             <div>
             <Row className='hero' justify='center' align="top" style={{ backgroundSize:'cover', backgroundImage:'url('+`${dataClick.image}`+')'}}>
                 <Col className='hero-content' xs={24} md={16} style={ affixed ? { paddingTop:20, paddingBottom:20, transition: 'padding-top 0.5s, padding-bottom 0.5s' } : { paddingTop:50, paddingBottom:50, transition: 'padding-top 0.5s, padding-bottom 0.5s' }}>
-                <Title ellipsis={{ rows: 1, expandable: false, symbol:' ' }}>
-                    <span style={{ fontFamily:'Quicksand', fontWeight:'700', color:'#fff'}}>{dataClick.title}</span>
+                {
+                    dataClick.type === 'Teknologi' ?
+                    <Tag color="#1890ff">#Teknologi</Tag>
+                    :
+                    <Tag color="#ff4d4f">#Pedagogi</Tag>
+                }
+                <Title ellipsis={{ rows: 1, expandable: false, symbol:' ' }} style={{color:'#fff', }}>
+                    <span style={{ fontSize:'1em', fontFamily:'Teko', fontWeight:'500', color:'#fff'}}>{dataClick.title}</span>
                 </Title>
-                    {
-                        dataClick.type === 'Teknologi' ?
-                        <Tag color="#1890ff">#Teknologi</Tag>
-                        :
-                        <Tag color="#ff4d4f">#Pedagogi</Tag>
-                    }
-                    
                     <Row justify='center' align="top">
-                        <Col flex='auto' style={ affixed ? { fontSize:'0.9em', transition:'font-size 0.5s' } : {fontSize:'1.2em', transition:'font-size 0.5s'}}>
+                        <Col flex='auto' style={ affixed ? { fontSize:'0.9em', transition:'font-size 0.5s' } : {fontSize:'1em', transition:'font-size 0.5s'}}>
                             <div style={{width: 400}}>
                             <Paragraph style={{color:'#fff' }} ellipsis={{ rows: 3, expandable: false, symbol:'...' }}>{dataClick.description}</Paragraph>
                             </div>
                             <span>Nilaian Artikel: </span><Rate allowHalf disabled value={dataClick.rating}/><br/>
                             <span>Meter Kesusahan: </span><Progress percent={dataClick.difficulty} steps={5} style={{color:'white'}} /><br />
                             <span>Meter Tular: <EyeOutlined />{dataClick.views}</span><br />
-                            <span style={{ color:'#fff' }} >Penyumbang: <Avatar size={20} src={dataClick.authorAvatar}/> {dataClick.author}</span><br />
+                            <span style={{ color:'#fff' }} ><Avatar size={18} src={dataClick.authorAvatar}/> {dataClick.author}</span><br />
                             {
                                 dataClick.type === 'Teknologi' ?
                                 <Link to={{pathname: `/teknologi/${dataClick._id}`}} onClick={() => addMeterTular(dataClick._id)}>
-                                    <Button type="primary" style={{ marginTop:20 }}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white' }}><PlusOutlined /> Simpan</Button>
+                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300'}}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white' }}><PlusOutlined /> Simpan</Button>
                                 </Link>
                                 :
                                 <Link to={{pathname: `/pedagogi/${dataClick._id}`}} onClick={() => addMeterTular(dataClick._id)}>
-                                    <Button type="primary" style={{ marginTop:20 }}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white'  }}><PlusOutlined /> Simpan</Button>
+                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300' }}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white'  }}><PlusOutlined /> Simpan</Button>
                                 </Link>
                             }
                         </Col>
@@ -229,11 +228,12 @@ const Home = () => {
                             <Link to={{pathname: `/teknologi/${datum._id}`}} onClick={() => addMeterTular(datum._id)} onMouseEnter={() => changeHeroView(datum._id)}>
                                 <Badge.Ribbon text={datum.type} style={{ backgroundColor:'#1890ff' }}>
                                     <Row justify='center' align="middle" className='edtech-card' style={{ backgroundSize:'cover', backgroundImage:'url('+`${datum.image}`+')'}}>
-                                        <Col flex='auto' style={{ marginLeft: 20}}>
-                                            <Title ellipsis={{ rows: 3, expandable: false, symbol:' ' }} style={{ lineHeight:'1em', fontSize: '2em', textShadow:'0px 0px 3px black', color:'#fff', fontWeight:700, fontFamily:'Quicksand'}}>
-                                                <span>{datum.title}</span>
+                                        <Col flex='auto' style={{ marginLeft: 20, marginRight:20}}>
+                                            <Title ellipsis={{ fontSize:'1em', rows: 3, expandable: false, symbol:' ' }} style={{ lineHeight:'1em', fontSize: '2em', textShadow:'0px 0px 3px black', color:'#fff'}}>
+                                                <span style={{ fontFamily:'Teko', fontWeight:'300' }}>{datum.title}</span>
                                             </Title>
                                             <Rate style={{ fontSize:'0.8em'}} allowHalf disabled defaultValue={datum.rating}/>
+
                                         </Col>
                                     </Row>
                                 </Badge.Ribbon>
@@ -243,8 +243,8 @@ const Home = () => {
                                 <Badge.Ribbon text={datum.type} style={{ backgroundColor:'#ff4d4f', color:'grey' }}>
                                     <Row justify='center' align="middle" className='edtech-card' style={{ backgroundSize:'cover', backgroundImage:'url('+`${datum.image}`+')'}}>
                                         <Col flex='auto' style={{ marginLeft: 20 }}>
-                                            <Title ellipsis={{ rows: 3, expandable: false, symbol:' ' }} style={{ lineHeight:'1em', fontSize: '2em', textShadow:'0px 0px 3px black', color:'#fff', fontWeight:700, fontFamily:'Quicksand'}}>
-                                                <span>{datum.title}</span>
+                                            <Title ellipsis={{ rows: 3, expandable: false, symbol:' ' }} style={{ lineHeight:'1em', fontSize: '2em', textShadow:'0px 0px 3px black', color:'#fff', fontFamily:'Teko'}}>
+                                                <span style={{ fontFamily:'Teko', fontWeight:'300' }}>{datum.title}</span>
                                             </Title>
                                             <Rate style={{ fontSize:'0.8em'}} allowHalf disabled value={datum.rating}/>
                                         </Col>

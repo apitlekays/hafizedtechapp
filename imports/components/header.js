@@ -10,8 +10,6 @@ import Popover from 'antd/es/popover';
 
 import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 
-
-
 //creating Layout objects
 const { Header } = Layout;
 
@@ -21,7 +19,7 @@ const content = (
     </div>
 )
 
-function HeaderX(props){
+const HeaderX = (props) =>{
     
     return (
         <>
