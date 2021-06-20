@@ -18,6 +18,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-favicon": "^0.0.22",
+    "react-lite-youtube-embed": "^2.0.3",
     "react-router-dom": "^5.2.0",
     "react-svg": "^13.0.6",
     "simpl-schema": "^1.12.0"

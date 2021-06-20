@@ -1,5 +1,5 @@
 .hero-detailed {
-    background-color: #b83f3f;
+    background-color: #000000;
     height: 350px;
     background-position: center;
 }
@@ -12,13 +12,13 @@
     top: 64px;
     width: 100%;
     height: 350px;
-    opacity: 0.8;
+    opacity: 0.9;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background: #C33764;  /* fallback colour. Make sure this is just one solid colour. */
-    background: -webkit-linear-gradient(rgba(14, 21, 88, 0.8), rgba(139, 5, 48, 0.8));
-    background: linear-gradient(rgba(14, 21, 88, 0.8), rgba(139, 5, 48, 0.8)); /* The least supported option. */
+    background: -webkit-linear-gradient(rgba(14, 21, 88, 0.897), rgba(139, 5, 48, 0.8));
+    background: linear-gradient(rgba(14, 21, 88, 0.897), rgba(139, 5, 48, 0.8)); /* The least supported option. */
 }
 
 .article-main{
@@ -28,10 +28,45 @@
     border-radius: 5px;
     box-shadow: 0px 0px 4px darkgrey;
     padding: 40px;
+    z-index: 2;
 }
 
 .hero-detailed-contents{
     z-index: 1;
     text-align: center;
-    margin-top: 100px;
+    margin-top: 50px;
+    color: white;
+}
+
+.hero-detailed-accessory-container{
+    background-color: #b83f3f;
+    height: 350px;
+}
+
+.hero-detailed-accessory-container::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 350px;
+    opacity: 0.5;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background: #C33764;  /* fallback colour. Make sure this is just one solid colour. */
+    background: -webkit-linear-gradient(rgba(139, 5, 48, 0.8), rgba(14, 21, 88, 0.897));
+    background: linear-gradient(rgba(139, 5, 48, 0.8), rgba(14, 21, 88, 0.897)); /* The least supported option. */
+}
+
+.carousel-image {
+    height:350px;
+    width:100%;
+    color: white;
+    text-align: center;
+}
+
+.kandungan>.ant-anchor {
+    background-color: rgba(255, 255, 255, 0.88) !important;
 }
