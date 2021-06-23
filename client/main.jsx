@@ -24,7 +24,7 @@ const Missing = React.lazy(() => import('../imports/ui/pages/missing'));
 const Profile = React.lazy(() => import('../imports/ui/pages/profile'));
 const Tutorial = React.lazy(() => import('../imports/ui/pages/tutorial'));
 
-Meteor.startup(() => {
+Meteor.startup(() => { 
 
   var head = document.getElementsByTagName('head')[0];
 
