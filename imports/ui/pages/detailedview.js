@@ -69,8 +69,9 @@ const listTutorialData = [
         _id: '123',
         image: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
         title: `Flipped Classroom PdPR`,
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+        avatar: '/hacker32.png',
         description:'Hack(EduTech);',
+        author:'Hafiz',
         content:'Bagaimana untuk menggunakan pendekatan Flipped Classroom dalam pengajaran dan pembelajaran semasa PdPR',
     },
     {
@@ -79,6 +80,7 @@ const listTutorialData = [
         title: `Pembelajaran Berbalik Menggunakan Teknologi`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         description:'Hack(EduTech);',
+        author: 'Najwa',
         content:'Dalam artikel ini, anda akan disajikan dengan cara bagaimana menggunakan strategi pembelajaran berbalik ini dalam keadaan pandemik dengan menggunakan beberapa pilihan pelantar teknologi.',
     },
     {
@@ -87,6 +89,7 @@ const listTutorialData = [
         title: `tutorial part 3`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         description:'Hack(EduTech);',
+        author: 'Hannan',
         content:'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
     },
 ]
@@ -291,9 +294,6 @@ const DetailedView = (props) => {
                                         itemLayout="vertical"
                                         size="small"
                                         pagination={{
-                                        onChange: page => {
-                                            console.log(page);
-                                        },
                                         pageSize: 2,
                                         }}
                                         dataSource={listTutorialData}
@@ -306,22 +306,15 @@ const DetailedView = (props) => {
                                         <List.Item
                                             key={item.title}
                                             actions={[
-                                            <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                                             <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                                            <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                                             ]}
-                                            extra={
-                                            <img
-                                                width={150}
-                                                alt="logo"
-                                                src={item.image}
-                                            />
-                                            }
                                         >
                                             <List.Item.Meta
-                                            avatar={<Avatar src={item.avatar} />}
-                                            title={ <a component={Link} to={{pathname: `/tutorial/${item._id}`}}>{item.title}</a>}
-                                            description={item.description}
+                                            avatar={<Avatar size={60} src={item.avatar} />}
+                                            title={(
+                                                <Link to={{pathname: `/tutorial/${item._id}`}}>{item.title}</Link>
+                                            )}
+                                            description={'Penulis: '+item.author}
                                             />
                                             {item.content}
                                         </List.Item>
