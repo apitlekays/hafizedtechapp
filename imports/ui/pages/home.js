@@ -1,5 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
+
+import { ServiceConfiguration } from 'meteor/service-configuration';
+
+import { useCurrentUserProfile } from '../../../client/CurrentUserProfileContext';
 
 import Row from 'antd/es/row';
 import Col from 'antd/es/col';
@@ -11,10 +16,14 @@ import Typography from 'antd/es/typography';
 import Button from 'antd/es/button';
 import Tag from 'antd/es/tag';
 import Affix from 'antd/es/affix';
+import message from 'antd/es/message';
+import notification from 'antd/es/notification';
 
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
+import GoogleOutlined from '@ant-design/icons/GoogleOutlined';
+import CheckOutlined from '@ant-design/icons/CheckOutlined';
 
 import './home.css';
 import { Divider } from 'antd';
@@ -23,7 +32,7 @@ const { Paragraph, Title } = Typography;
 
 const data = [
     {
-        _id:1,
+        _id:'1',
         type: 'Pedagogi',
         image: '/hero1.jpg',
         title: 'Pendekatan Flipped Classroom',
@@ -36,7 +45,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:2,
+        _id:'2',
         type: 'Teknologi',
         image: '/hero2.jpg',
         title: 'Padlet',
@@ -49,7 +58,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:3,
+        _id:'3',
         type: 'Teknologi',
         image: '/hero3.jpg',
         title: 'Canva',
@@ -62,7 +71,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:4,
+        _id:'4',
         type: 'Pedagogi',
         image: '/hero4.jpg',
         title: 'Pendekatan Peer Instruction',
@@ -75,7 +84,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:5,
+        _id:'5',
         type: 'Pedagogi',
         image: '/hero3.jpg',
         title: 'Pendekatan Pembelajaran Masteri',
@@ -88,7 +97,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:6,
+        _id:'6',
         type: 'Pedagogi',
         image: '/hero1.jpg',
         title: 'Pendekatan Drill & Practice',
@@ -101,7 +110,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:7,
+        _id:'7',
         type: 'Teknologi',
         image: '/hero2.jpg',
         title: 'Moodle',
@@ -114,7 +123,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:8,
+        _id:'8',
         type: 'Teknologi',
         image: '/hero3.jpg',
         title: 'Facebook',
@@ -127,7 +136,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:9,
+        _id:'9',
         type: 'Pedagogi',
         image: '/hero4.jpg',
         title: 'Pendekatan Problem Based Learning',
@@ -140,7 +149,7 @@ const data = [
         het_impact: 1.3
     },
     {
-        _id:10,
+        _id:'10',
         type: 'Pedagogi',
         image: '/hero3.jpg',
         title: 'Pendekatan Constructivism',
@@ -156,8 +165,9 @@ const data = [
 
 const Home = () => {
 
+    const currentUser = useCurrentUserProfile(); //get the current logged in user
     const [dataClick, setDataClick] = useState({
-        _id:1,
+        _id:'1',
         type: 'Pedagogi',
         image: '/hero1.jpg',
         title: 'Pendekatan Flipped Classroom',
@@ -169,8 +179,18 @@ const Home = () => {
         views: 200,
         het_impact: 1.3
     })
-
     const [ affixed, setAffixed ] = useState(false)
+    const [ triggerLoginAlert, setTriggerLogginAlert ] = useState(false);
+    const [ senaraiArtikelSimpanan, setSenaraiArtikelSimpanan ] = useState([]);
+
+    useEffect(() =>{
+        const loadData = () => {
+            if(currentUser){
+                setSenaraiArtikelSimpanan(currentUser.idArtikelSimpanan);
+            }
+        }
+        loadData();
+    },[currentUser])
 
     const changeHeroView = (id) => {
         let [result] = data.filter(res => {
@@ -188,12 +208,62 @@ const Home = () => {
         console.log('bump up views for document with _id: ', id);
     }
 
+    const googleLoginSimpan = () => {
+        const {scope} = ServiceConfiguration.configurations.findOne({service: 'google'});
+        Meteor.loginWithGoogle(
+            {requestPermissions: scope, requestOfflineToken: true },
+            error => {
+              if (error) {
+                  console.log(error);
+                  if (error.errorType === 'Accounts.LoginCancelledError') return;
+                  message.error(error.reason);
+              } else {
+                  notification.success(loginUpdateArgs);
+                  message.success('Selamat Datang ke platform Hack(Edu)Tech! \u{1F604}')
+              }
+            }
+          );
+    }
+
+    const key = 'updatable';
+    const loginArgs = {
+        key,
+        message: 'Tidak berjaya menyimpan artikel.',
+        description:
+        <>
+        <span>Sudahkah anda mempunyai akaun Hack(Edu)Tech? Sila login/daftar dahulu sebelum anda menyimpan artikel tersebut dalam profil anda.</span><br/>
+        <Button block
+        style={{ marginTop: 10, backgroundColor:'rgb(77, 179, 0)', borderColor:'rgb(77, 179, 0)', color:'white' }}onClick={googleLoginSimpan}
+        >
+            <GoogleOutlined />
+            Login
+        </Button>
+        </>,
+        duration: 0,
+    };
+
+    const loginUpdateArgs = {
+        key,
+        message: 'Anda sudah berjaya masuk',
+        description:'Kini anda boleh menyimpan mana-mana artikel untuk rujukan pada masa akan datang.',
+        duration: 3.5,
+    };
+    
+
+    const saveArticle = (id) => {
+        if(!Meteor.userId()){
+            notification.warn(loginArgs);
+        } else {
+            message.success('article saved');
+        }
+    }
+
     return (
         <>
         <Affix onChange={toggleAffix}>
             <div>
             <Row className='hero' justify='center' align="top" style={{ backgroundSize:'cover', backgroundImage:'url('+`${dataClick.image}`+')'}}>
-                <Col className='hero-content' xs={24} md={16} style={ affixed ? { paddingTop:20, paddingBottom:20, transition: 'padding-top 0.5s, padding-bottom 0.5s' } : { paddingTop:50, paddingBottom:50, transition: 'padding-top 0.5s, padding-bottom 0.5s' }}>
+                <Col className='hero-content' xs={24} md={16} style={ affixed ? { paddingTop:20, paddingBottom:20 } : { paddingTop:50, paddingBottom:50 }}>
                 {
                     dataClick.type === 'Teknologi' ?
                     <Tag color="#1890ff">#Teknologi</Tag>
@@ -204,7 +274,7 @@ const Home = () => {
                     <span style={{ fontSize:'1em', fontFamily:'Teko', fontWeight:'500', color:'#fff'}}>{dataClick.title}</span>
                 </Title>
                     <Row justify='center' align="top">
-                        <Col flex='auto' style={ affixed ? { fontSize:'0.9em', transition:'font-size 0.5s' } : {fontSize:'1em', transition:'font-size 0.5s'}}>
+                        <Col flex='auto' style={ affixed ? { fontSize:'0.9em' } : {fontSize:'1em'}}>
                             <div style={{width: 400}}>
                             <span style={{ color:'#fff', fontStyle:'italic' }} ><Avatar size={18} src={dataClick.authorAvatar}/> {dataClick.author}</span><br />
                             <Paragraph style={{color:'#fff', paddingTop:10 }} ellipsis={{ rows: 3, expandable: false, symbol:'...' }}>{dataClick.description}</Paragraph>
@@ -215,13 +285,30 @@ const Home = () => {
                             <Tag icon={<BarChartOutlined />} color="#87d068" style={{color:'black', fontStyle:'italic', marginTop:5}}>HET Impak: {dataClick.het_impact}</Tag><br/>
                             {
                                 dataClick.type === 'Teknologi' ?
+                                <>
                                 <Link to={{pathname: `/teknologi/${dataClick._id}`}} onClick={() => addMeterTular(dataClick._id)}>
-                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300'}}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white' }}><PlusOutlined /> Simpan</Button>
+                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300'}}>Baca</Button>
                                 </Link>
+                                {
+                                    currentUser != undefined && senaraiArtikelSimpanan.includes(dataClick._id) ?
+                                    <Button type="primary" style={{ marginTop:20, marginLeft:5 ,  backgroundColor: '#4db300', borderColor: '#4db300' }}><CheckOutlined /> Dalam Simpanan</Button>
+                                    :
+                                    <Button type="ghost" style={{ marginTop:20, marginLeft:5 , borderColor:'white', color:'white'  }} onClick={() => saveArticle(dataClick._id)}><PlusOutlined /> Simpan Artikel Ini</Button>
+                                    
+                                }
+                                </>
                                 :
+                                <>
                                 <Link to={{pathname: `/pedagogi/${dataClick._id}`}} onClick={() => addMeterTular(dataClick._id)}>
-                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300' }}>Baca</Button> <Button type="ghost" style={{ marginTop:20, borderColor:'white', color:'white'  }}><PlusOutlined /> Simpan</Button>
+                                    <Button type="primary" style={{ marginTop:20, backgroundColor: '#4db300', borderColor: '#4db300' }}>Baca</Button>
                                 </Link>
+                                {
+                                    currentUser != undefined && senaraiArtikelSimpanan.includes(dataClick._id) ?
+                                    <Button type="primary" style={{ marginTop:20, marginLeft:5 ,  backgroundColor: '#4db300', borderColor: '#4db300' }}><CheckOutlined /> Dalam Simpanan</Button>
+                                    :
+                                    <Button type="ghost" style={{ marginTop:20, marginLeft:5 , borderColor:'white', color:'white'  }} onClick={() => saveArticle(dataClick._id)}><PlusOutlined /> Simpan Artikel Ini</Button>
+                                }
+                                </>
                             }
                         </Col>
                     </Row>

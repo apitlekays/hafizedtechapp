@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 import './detailedview.css';
@@ -10,7 +10,6 @@ import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import LikeOutlined from '@ant-design/icons/LikeOutlined';
 import StarOutlined from '@ant-design/icons/StarOutlined';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
-import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
 import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
 import ShareAltOutlined from '@ant-design/icons/ShareAltOutlined';
 
@@ -26,6 +25,7 @@ import Divider from 'antd/es/divider';
 import Tag from 'antd/es/tag';
 import Badge from 'antd/es/badge';
 import Anchor from 'antd/es/anchor';
+import PageHeader from 'antd/es/page-header';
 
 const data = {
     _id:1,
@@ -38,12 +38,17 @@ const data = {
     author:'Hafiz Hanif',
     authorAvatar: '/hacker32.png',
     views: 200,
-    het_impact: 1.25
+    het_impact: 1.25,
+    video: {
+        id: 'bpqgFUE2h5A',
+        title: 'PdPR'
+    },
+    tutorials: []
 }
 
 const listTutorialData = [
     {
-        href: 'https://ant.design',
+        _id: '123',
         image: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
         title: `Flipped Classroom PdPR`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -51,7 +56,7 @@ const listTutorialData = [
         content:'Bagaimana untuk menggunakan pendekatan Flipped Classroom dalam pengajaran dan pembelajaran semasa PdPR',
     },
     {
-        href: 'https://ant.design',
+        _id: '456',
         image: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
         title: `Pembelajaran Berbalik Menggunakan Teknologi`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -59,7 +64,7 @@ const listTutorialData = [
         content:'Dalam artikel ini, anda akan disajikan dengan cara bagaimana menggunakan strategi pembelajaran berbalik ini dalam keadaan pandemik dengan menggunakan beberapa pilihan pelantar teknologi.',
     },
     {
-        href: 'https://ant.design',
+        _id: '789',
         image: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
         title: `tutorial part 3`,
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -76,6 +81,7 @@ const DetailedView = (props) => {
     let id = props.match.params._id // this to get id from url
     let { _id } = useParams(); // this to get id from url
 
+    const history = useHistory();
     const IconText = ({ icon, text }) => (
         <Space>
           {React.createElement(icon)}
@@ -91,7 +97,6 @@ const DetailedView = (props) => {
                         <span style={{ fontFamily:'Teko', fontSize: '2em', color:'#fff',textShadow:'0px 0px 5px grey' }} >{data.title}</span>
                     </Title>
                     <Avatar size={20} src={data.authorAvatar}/><span style={{textShadow:'0px 0px 2px grey'}}> {data.author}</span><br/>
-                    
                 </Col>
                 <Row justify='center' align="bottom" style={{ zIndex:1, height:'80px', width:'100%' }}>
                     <Col xs={24} md={12} style={{ height:'50px', width:'100%', padding: '0 20px', textAlign:'right', color:'#FFFF'}}>
@@ -107,6 +112,14 @@ const DetailedView = (props) => {
             </Row>
             <Row justify='center' align="top" style={{ maxWidth:'1400px', marginTop:20, marginBottom:20, marginLeft:'auto', marginRight:'auto'}}>
                     <Col xs={24} md={16} className='article-main'>
+                            <Row>
+                                <PageHeader
+                                    className="site-page-header"
+                                    onBack={() => history.goBack()}
+                                    title={data.title}
+                                    subTitle={'| ' + data.type}
+                                />
+                            </Row>
                             <Row>
                                 <Col flex='auto'>
                                 <Badge.Ribbon style={data.type === 'Teknologi' ? {backgroundColor:'#1890ff'} : {backgroundColor:'#ff4d4f', color:'grey' }} text={data.type}>
@@ -172,7 +185,7 @@ const DetailedView = (props) => {
                                         >
                                             <List.Item.Meta
                                             avatar={<Avatar src={item.avatar} />}
-                                            title={<a href={item.href}>{item.title}</a>}
+                                            title={ <a component={Link} to={{pathname: `/tutorial/${item._id}`}}>{item.title}</a>}
                                             description={item.description}
                                             />
                                             {item.content}
@@ -184,8 +197,8 @@ const DetailedView = (props) => {
                                         Video
                                     </Title>
                                     <LiteYouTubeEmbed 
-                                        id="bpqgFUE2h5A"
-                                        title="PdPR"
+                                        id={data.video.id}
+                                        title={data.video.title}
                                     />
                                 </Col>
                                 <Col xs={{span:24, order:1}} lg={{span:8, order: 2}} style={{ padding: 20 }}>

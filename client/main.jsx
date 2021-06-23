@@ -9,8 +9,11 @@ import './main.css';
 import 'antd/dist/antd.css';
 import Row from 'antd/es/row';
 import Col from 'antd/es/col';
+import message from 'antd/es/message';
 
 import { LottieLoadings } from '../imports/components/LottieLoadings';
+
+import CurrentUserProfileProvider  from './CurrentUserProfileContext';
 
 import HeaderX from '../imports/components/header';
 import FooterX from '../imports/components/footer';
@@ -18,6 +21,8 @@ import FooterX from '../imports/components/footer';
 const Home = React.lazy(() => import('../imports/ui/pages/home'));
 const DetailedView = React.lazy(() => import('../imports/ui/pages/detailedview'));
 const Missing = React.lazy(() => import('../imports/ui/pages/missing'));
+const Profile = React.lazy(() => import('../imports/ui/pages/profile'));
+const Tutorial = React.lazy(() => import('../imports/ui/pages/tutorial'));
 
 Meteor.startup(() => {
 
@@ -34,6 +39,11 @@ Meteor.startup(() => {
   style2.href = "https://fonts.googleapis.com/css2?family=Teko:wght@300;500&family=Open+Sans&family=Quicksand:wght@300;400;500;600;700&family=Raleway&display=swap";
   head.appendChild(style2);
 
+  //global config for message ANTD
+  message.config({
+    top: 70,
+  });
+
   const Loading = () => (
     <Row justify='space-around' align="middle" style={{ height: '100vh' }}>
       <Col span={4}>
@@ -46,24 +56,32 @@ Meteor.startup(() => {
     const routes = (
       <>
         <Router history={history}>
-          <HeaderX/>
-          <Suspense fallback={<Loading />}>
-            <Switch>
-              <Route exact path='/' render={() => {
-                return <Home/>
-              }}/>
-              <Route exact path='/pedagogi/:_id' render={( {match} ) => {
-                return <DetailedView match={match} />
-              }}/>
-              <Route exact path='/teknologi/:_id' render={( {match} ) => {
-                return <DetailedView match={match} />
-              }}/>
-              <Route path='*'>
-                <Missing/>
-              </Route>
-            </Switch>
-          </Suspense>
-          <FooterX/>
+          <CurrentUserProfileProvider>
+            <HeaderX/>
+            <Suspense fallback={<Loading />}>
+              <Switch>
+                <Route exact path='/' render={() => {
+                  return <Home/>
+                }}/>
+                <Route exact path='/pedagogi/:_id' render={( {match} ) => {
+                  return <DetailedView match={match} />
+                }}/>
+                <Route exact path='/teknologi/:_id' render={( {match} ) => {
+                  return <DetailedView match={match} />
+                }}/>
+                <Route exact path='/profil/:_id' render={( {match} ) => {
+                  return <Profile match={match} />
+                }}/>
+                <Route exact path='/tutorial/:_id' render={( {match} ) => {
+                  return <Tutorial match={match} />
+                }}/>
+                <Route path='*'>
+                  <Missing/>
+                </Route>
+              </Switch>
+            </Suspense>
+            <FooterX/>
+          </CurrentUserProfileProvider>
         </Router>
       </>
     );
