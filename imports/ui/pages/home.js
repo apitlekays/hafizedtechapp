@@ -165,6 +165,10 @@ const data = [
 
 const Home = () => {
 
+    useEffect(() => {
+        window.scrollTo(0, 0); //scroll-to-top
+    }, []);
+
     const currentUser = useCurrentUserProfile(); //get the current logged in user
     const [dataClick, setDataClick] = useState({
         _id:'1',

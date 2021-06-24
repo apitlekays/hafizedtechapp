@@ -19,12 +19,9 @@ import './detailedview.css';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import LikeOutlined from '@ant-design/icons/LikeOutlined';
-import StarOutlined from '@ant-design/icons/StarOutlined';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
-import ShareAltOutlined from '@ant-design/icons/ShareAltOutlined';
 import GoogleOutlined from '@ant-design/icons/GoogleOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 
@@ -98,6 +95,11 @@ const { Paragraph, Title } = Typography;
 
 
 const DetailedView = (props) => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0); //scroll-to-top
+    }, []);
+
     //console.log(props.match.params)
     let id = props.match.params._id // this to get id from url
     let { _id } = useParams(); // this to get id from url

@@ -16,7 +16,7 @@ const FooterX = (props) => {
     return (
         <>
             <Footer className='footer' style={{ textAlign: 'center', backgroundColor: 'rgb(215,228,255)' }}>
-                Hack(EduTech).cc™ <CopyrightOutlined /> {currentYear()} Dibangunkan dengan <HeartTwoTone twoToneColor="#eb2f96" /> di Tanjong Malim, Malaysia.
+                Hack(Edu)Tech™ <CopyrightOutlined /> {currentYear()} Dibangunkan dengan <HeartTwoTone twoToneColor="#eb2f96" /> di Tanjong Malim, Malaysia.
             </Footer>
         </>
         
