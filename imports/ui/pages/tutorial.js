@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCurrentUserProfile } from '../../../client/CurrentUserProfileContext';
+import { SuperSEO } from 'react-super-seo';
 
 import Row from 'antd/es/row';
 import Col from 'antd/es/col';
@@ -152,6 +153,27 @@ const Tutorial = () => {
 
     return (
         <>
+        <SuperSEO
+            title={`${data.title}`+' | Hack(Edu)Tech;'}
+            description={data.description}
+            lang="ms"
+            openGraph={{
+                ogImage: {
+                ogImage:`${data.mainImage}`,
+                ogImageAlt: `${data.title}`,
+                ogImageWidth: 1200,
+                ogImageHeight: 630,
+                ogImageType: "image/jpeg",
+                },
+            }}
+            twitter={{
+                twitterSummaryCard: {
+                summaryCardImage: `${data.mainImage}`,
+                summaryCardImageAlt: `${data.title}`,
+                summaryCardSiteUsername: `${data.title}`+' | Hack(Edu)Tech;',
+                },
+            }}
+        />
         <Row justify='center' align="top" style={{ maxWidth:'1400px', marginTop:20, marginBottom:20, marginLeft:'auto', marginRight:'auto'}}>
             <PageHeader
                 ghost={false}

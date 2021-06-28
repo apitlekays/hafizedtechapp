@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { NavLink, useHistory, Link } from 'react-router-dom';
 import Favicon from 'react-favicon';
 import pkg from '../../package.json';
+import { SuperSEO } from 'react-super-seo';
 
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import { useCurrentUserProfile } from '../../client/CurrentUserProfileContext';
@@ -84,12 +85,33 @@ const HeaderX = (props) =>{
     
     return (
         <>
+            <SuperSEO
+                title={'Hack(Edu)Tech | Laman komuniti pedagogi dan teknologi anda'}
+                description='Misi Hack(EduTech); adalah untuk membantu anda mendalami pengetahuan teknologi dan pedagogi untuk menambahbaik strategi dan teknik pengajaran dan pembelajaran, berbantukan teknologi terkini'
+                lang="ms"
+                openGraph={{
+                    ogImage: {
+                    ogImage:'/hacker64.png',
+                    ogImageAlt: 'Hack(Edu)Tech',
+                    ogImageWidth: 64,
+                    ogImageHeight: 64,
+                    ogImageType: "image/jpeg",
+                    },
+                }}
+                twitter={{
+                    twitterSummaryCard: {
+                    summaryCardImage: '/hacker64.png',
+                    summaryCardImageAlt: 'Hack(Edu)Tech',
+                    summaryCardSiteUsername: 'Hack(Edu)Tech;',
+                    },
+                }}
+            />
             <Header className="header" style={{ backgroundColor:'white', zIndex: 1, position:'relative' }}>
                 <Favicon url={window.location.origin + '/hacker32.png'} />
                 <Row justify='center' align="top">
                     <Col flex='300'>
                         <div className="layout-logo">
-                            <NavLink exact to="/"><h1> <img style={{ height: '30px', width: '30px'}} alt='Hack(Edu)Tech; Logo' src={window.location.origin + '/hacker64.png' }/><span style={{ fontSize:'0.8em', fontFamily:'Quicksand' }}> Hack(<span style={{ color:'#ff4d4f'}}>Edu</span>)<span style={{ color:'#007bff'}}>Tech</span>; <Popover placement="bottomRight" content={content}> <QuestionCircleOutlined style={{color:'lightgrey', fontSize:'0.7em'}}/></Popover></span></h1></NavLink>
+                            <NavLink exact to="/"><h1> <img style={{ height: '30px', width: '30px'}} alt='Hack(Edu)Tech; Logo' src={window.location.origin + '/hacker64.png' }/><span style={{ fontSize:'0.8em', fontFamily:'Quicksand', fontWeight:'bold' }}> Hack(<span style={{ color:'#ff4d4f'}}>Edu</span>).<span style={{ color:'#007bff'}}>Tech</span>; <Popover placement="bottomRight" content={content}> <QuestionCircleOutlined style={{color:'lightgrey', fontSize:'0.7em'}}/></Popover></span></h1></NavLink>
                         </div>
                     </Col>
                     <Col flex='auto'>

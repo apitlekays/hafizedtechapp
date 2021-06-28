@@ -81,7 +81,7 @@ Meteor.startup(() => {
 
     if (typeof(doc.services.google) != "undefined") {
 
-        //custom assign a specific role for Dr Mohd Hafiz Md Hanif, the creator of Kelasruum.io
+        //custom assign a specific role for Dr Mohd Hafiz Md Hanif, the creator of hack(edu).tech
         if(doc.services.google.email === 'mohd_hafiz@fpm.upsi.edu.my'){
             Roles.createRole('superuser', {unlessExists: true});
             Roles.addUsersToRoles(doc._id, ['superuser']);
@@ -89,9 +89,9 @@ Meteor.startup(() => {
             doc.activated = 1;
             doc.status = 'offline';
         } else {
-            Roles.createRole('student', {unlessExists: true});
-            Roles.addUsersToRoles(doc._id, ['student']);
-            doc.roles = ['student']; //options are superuser, admin, teacher, student
+            Roles.createRole('subscriber', {unlessExists: true});
+            Roles.addUsersToRoles(doc._id, ['subscriber']);
+            doc.roles = ['subscriber']; //options are subscriber, moderator, superuser
             doc.status = 'offline';
             doc.activated = 1;
         }
