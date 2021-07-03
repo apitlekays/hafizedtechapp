@@ -36,7 +36,7 @@ Meteor.startup(() => {
   var style2 = document.createElement('link');
   style2.rel = "stylesheet";
   style2.type = "text/css";
-  style2.href = "https://fonts.googleapis.com/css2?family=Teko:wght@300;500&family=Open+Sans&family=Quicksand:wght@300;400;500;600;700&family=Raleway&display=swap";
+  style2.href = "https://fonts.googleapis.com/css2?family=Teko:wght@300;500&family=Open+Sans:wght@400;700&family=Quicksand:wght@300;400;500;600;700&family=Raleway&display=swap";
   head.appendChild(style2);
 
   //global config for message ANTD

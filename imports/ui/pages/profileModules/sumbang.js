@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Row from 'antd/es/row';
 import Col from 'antd/es/col';
-import Form from 'antd/es/form';
-import Input from 'antd/es/input';
 import Select from 'antd/es/select';
-import Slider from 'antd/es/slider';
-import Upload from 'antd/es/upload';
 import Steps from 'antd/es/steps';
 import Button from 'antd/es/button';
 import Table from 'antd/es/table';
@@ -20,24 +16,27 @@ import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 
+import Step1 from './sumbangSteps/step1';
+import Step2 from './sumbangSteps/step2';
+//import Step2Tutorial from './sumbangSteps/step2tutorial';
+import Step3 from './sumbangSteps/step3';
+
 const { Step } = Steps;
 const { Option } = Select;
 
 //article submission steps
 const steps = [
     {
-      title: 'Butiran',
-      content: (
-          <p>test</p>
-      ),
+        title: 'Butiran',
+
     },
     {
       title: 'Kandungan',
-      content: 'Second-content',
+
     },
     {
       title: 'Pratonton',
-      content: 'Last-content',
+
     },
 ];
 
@@ -122,6 +121,10 @@ const Sumbang = () => {
 
     const [ toggleModal, setToggleModal ] = useState(false);
     const [ current, setCurrent ] = useState(0);
+    const [ formValue, setFormValue ] = useState([]);
+    const [ dataAlatan, setDataAlatan ] = useState([]);
+    const [ formValue2, setFormValue2 ] = useState([]);
+    const [ errorForm, setErrorForm ] = useState(false);
 
     const openModal = () => {
         setToggleModal(true)
@@ -143,6 +146,41 @@ const Sumbang = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
+
+    useEffect(() => {
+        console.log('fv: ',formValue);
+        console.log('dta: ',dataAlatan);
+        console.log('fv2: ', formValue2);
+        const errorCheck = () => {
+            if(formValue.length === 0){
+                setErrorForm(true)
+            } else {
+                if(current === 0){
+                    if(formValue.some(e => e.value === undefined || e.value === '' || e.value === 0 || e.value.length === 0 )){
+                        setErrorForm(true)
+                    } else {
+                        setErrorForm(false)
+                    }
+                }
+                if(current === 1){
+                    //console.log('triggered 1')
+                    if(formValue2.length === 0){
+                        setErrorForm(true)
+                    } else {
+                        if(formValue2.some(e => e.value === "<p><br></p>")){
+                            setErrorForm(true)
+                        } else {
+                            setErrorForm(false)
+                        } 
+                    }
+                }
+                
+            }
+        }
+        errorCheck();
+    },[formValue, dataAlatan, formValue2, current])
+
+    const deleteY = (data) => { setFormValue2(formValue2 => formValue2.filter(obj => !obj.name.includes(data)));}
 
     return (
         <>
@@ -168,9 +206,17 @@ const Sumbang = () => {
                     <Step key={item.title} title={item.title} />
                 ))}
             </Steps>
-            <Row justify='start' align="top" style={{ padding: 10}}>
+            <Row justify='center' align="top" style={{ padding: 10}}>
                 <Col>
-                    {steps[current].content}
+                    {
+                        current === 0 ? 
+                            <Step1 fields={formValue} onChange={(newFields) => {setFormValue(newFields)}}/>
+                        : current === 1 ?
+                            <Step2 fields={formValue2} fieldsAlatan={dataAlatan} onChangeAlatan={(newData) => {setDataAlatan(newData)}} onChange={(newFields) => {setFormValue2(newFields)}}/>
+                        : current === 2 ?
+                            <Step3 formValue={formValue} formValue2={formValue2} dataAlatan={dataAlatan} />
+                        :''
+                    }
                 </Col>
             </Row>
             <div className="steps-action" style={{ textAlign:'right' }}>
@@ -180,7 +226,11 @@ const Sumbang = () => {
                     </Button>
                 )}
                 {current < steps.length - 1 && (
-                    <Button type="primary" onClick={() => next()}>
+                    <Button 
+                        type="primary" 
+                        onClick={() => next()} 
+                        disabled={errorForm}
+                    >
                         Seterusnya
                     </Button>
                 )}
