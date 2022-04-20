@@ -24,18 +24,18 @@ Meteor.startup(() => {
     { service: 'google' },
     {
       $set: {
-        clientId: '1085706705862-sfae8tgnu2s8p006qa97mjsas40ga73m.apps.googleusercontent.com',
+        clientId: /****REDACTED CODE****/,
         loginStyle: 'popup',
-        secret: 'N4IY9of8JAu275EWi0AUcqdt'
+        secret: /****REDACTED CODE****/
       }
     }
   );
 
   //**** ----- RESTRICT ACCOUNTS CREATION TO SELECTED EMAILS
-    //Accounts.config({restrictCreationByEmailDomain: 'upsi.edu.my'});
+    //Accounts.config({restrictCreationByEmailDomain: /****REDACTED CODE****/});
     var checkEmailAgainstAllowed = function(email) {
       //var allowedDomains = ['mycompanydomain.com'];
-      var allowedEmails = ['mohd_hafiz@fpm.upsi.edu.my', 'mahizer@fpm.upsi.edu.my', 'apitlekays@gmail.com'];
+      /****REDACTED CODE****/
       //var domain = email.replace(/.*@/,'').toLowerCase();
       email = email.toLowerCase();
       return allowedEmails.includes(email);
@@ -82,7 +82,7 @@ Meteor.startup(() => {
     if (typeof(doc.services.google) != "undefined") {
 
         //custom assign a specific role for Dr Mohd Hafiz Md Hanif, the creator of hack(edu).tech
-        if(doc.services.google.email === 'mohd_hafiz@fpm.upsi.edu.my'){
+        if(doc.services.google.email === '/****REDACTED CODE****/'){
             Roles.createRole('superuser', {unlessExists: true});
             Roles.addUsersToRoles(doc._id, ['superuser']);
             doc.roles = ['superuser'];
